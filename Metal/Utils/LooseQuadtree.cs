@@ -1,4 +1,4 @@
-﻿namespace Mir3.Shared.Utils;
+﻿namespace Metal.Utils;
 
 public struct AoiEntity
 {
@@ -23,6 +23,7 @@ public class LooseQuadtree
     private const int MaxObjects = 8;
     private const int MaxDepth = 6;
     private const float LooseFactor = 2.0f;
+    private readonly int _rootIndex;
 
     private AoiEntity[] _entities;
     private int _entityCount;
@@ -31,7 +32,6 @@ public class LooseQuadtree
 
     private QuadNode[] _nodePool;
     private int _queryStamp;
-    private readonly int _rootIndex;
 
     public LooseQuadtree(float x, float y, float w, float h, int maxNodes, int maxEntities)
     {

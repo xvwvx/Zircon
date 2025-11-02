@@ -2,8 +2,8 @@
 using FreeSql;
 using Library;
 using Library.SystemModels;
-using Mir3.Data.Database;
-using Mir3.Data.Models;
+using Mir3.Shared.Database;
+using Mir3.Shared.Models;
 using MirDB;
 using Server.DBModels;
 using Server.Envir;
@@ -31,6 +31,10 @@ internal class Program
             .Build();
         var dataSource = new DatabaseDataSource(freeSql);
 
+        var repository = dataSource.GetRepository<Item>();
+        var a1 = repository.GetAll();
+        var a2 = repository.Get(2);
+
         try
         {
             Transform<SetInfo, ItemSet>(session, dataSource);
@@ -45,14 +49,14 @@ internal class Program
 
     private static void Transform<TFrom, TTo>(Session session, DatabaseDataSource dataSource)
         where TFrom : DBObject, new()
-        where TTo : BaseEntity, new()
+        where TTo : class, new()
     {
         var collection = session.GetCollection<TFrom>();
         var array = TransformHelper.To<TFrom, TTo>(collection);
-        var repository = dataSource.GetRepository<TTo>();
-        foreach (var entity in array)
-        {
-            repository.Upsert(entity);
-        }
+        // var repository = dataSource.GetRepository<TTo>();
+        // foreach (var entity in array)
+        // {
+        //     repository.Upsert(entity);
+        // }
     }
 }

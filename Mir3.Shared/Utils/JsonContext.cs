@@ -2,9 +2,9 @@
 
 using System.Text.Json.Serialization;
 using Library;
-using Mir3.Data.Models;
+using Mir3.Shared.Models;
 
-namespace Mir3.Data.Utils;
+namespace Mir3.Shared.Utils;
 
 [JsonSerializable(typeof(Stats))]
 [JsonSerializable(typeof(ItemSetStats[]))]

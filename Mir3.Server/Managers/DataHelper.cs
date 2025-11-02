@@ -1,15 +1,15 @@
 ﻿// Licensed to the X.
 
 using Autofac;
-using Mir3.Data.Database;
-using Mir3.Data.Models;
+using Metal.Data;
+using Mir3.Shared.Database;
 
 namespace Mir3.Server.Managers;
 
 public static class DataHelper
 {
     public static TEntity?[] Array<TEntity>(IComponentContext context)
-        where TEntity : BaseEntity
+        where TEntity : class, IHasDataId
     {
         var repository = context.Resolve<DatabaseDataSource>().GetRepository<TEntity>();
         var entities = repository.GetAll().ToArray();

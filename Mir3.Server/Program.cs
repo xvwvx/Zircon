@@ -4,9 +4,9 @@ using Mir3.Server.Managers;
 
 namespace Mir3.Server;
 
-class Program
+internal class Program
 {
-    static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var builder = new ContainerBuilder();
         builder.RegisterModule(new AutofacModule());

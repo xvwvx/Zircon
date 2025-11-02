@@ -1,6 +1,6 @@
 ﻿// Licensed to the X.
 
-namespace Mir3.Data;
+namespace Mir3.Shared;
 
 public interface IRepository
 {

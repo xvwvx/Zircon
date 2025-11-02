@@ -3,7 +3,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Mir3.Data.Models;
+using Metal.Data;
 using MirDB;
 
 namespace Mir3.Import;
@@ -93,7 +93,7 @@ public static class TransformHelper
             }
         }
 
-        if (to is BaseEntity entity && from is DBObject obj)
+        if (to is IHasDataId entity && from is DBObject obj)
         {
             entity.Id = (uint)obj.Index;
         }

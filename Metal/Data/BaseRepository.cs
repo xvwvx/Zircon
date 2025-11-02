@@ -1,6 +1,9 @@
 ﻿// Licensed to the X.
 
-namespace Mir3.Data;
+
+using Mir3.Shared;
+
+namespace Metal.Data;
 
 public abstract class BaseRepository<TEntity> : IRepository<TEntity>
     where TEntity : class

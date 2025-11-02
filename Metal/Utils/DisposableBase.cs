@@ -1,6 +1,6 @@
 // Licensed to X.
 
-namespace Mir3.Shared.Utils;
+namespace Metal.Utils;
 
 public abstract class DisposableBase : IDisposable
 {

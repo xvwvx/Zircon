@@ -2,9 +2,9 @@
 
 using Arch.Core;
 using Autofac;
-using Mir3.Data.Database;
+using Metal.Utils;
+using Mir3.Shared.Database;
 using Mir3.Shared.ECS;
-using Mir3.Shared.Utils;
 using Serilog;
 
 namespace Mir3.Server.Services;
@@ -13,9 +13,9 @@ public sealed class DbService
     : BaseSystem<World, UpdateTick>
 {
     private readonly ILogger _logger;
-    public readonly DatabaseDataSource DataSource;
 
     private readonly Queue<Action<DatabaseDataSource>> _queue = new();
+    public readonly DatabaseDataSource DataSource;
 
     public DbService(IComponentContext context) : base(context)
     {

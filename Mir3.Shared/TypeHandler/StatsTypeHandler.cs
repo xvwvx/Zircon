@@ -3,9 +3,9 @@
 using FreeSql.DataAnnotations;
 using FreeSql.Internal.Model;
 using Library;
-using Mir3.Data.Utils;
+using Mir3.Shared.Utils;
 
-namespace Mir3.Data.TypeHandler;
+namespace Mir3.Shared.TypeHandler;
 
 public class StatsTypeHandler : TypeHandler<Stats>
 {

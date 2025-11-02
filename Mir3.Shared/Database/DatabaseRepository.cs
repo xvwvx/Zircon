@@ -1,11 +1,11 @@
 ﻿// Licensed to the X.
 
 using System.Linq.Expressions;
-using Mir3.Data.Models;
+using Metal.Data;
 
-namespace Mir3.Data.Database;
+namespace Mir3.Shared.Database;
 
-public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity : BaseEntity
+public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity : class
 {
     private readonly IFreeSql _freeSql;
     private uint _nextId;
@@ -13,7 +13,7 @@ public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity
     public DatabaseRepository(IFreeSql freeSql)
     {
         _freeSql = freeSql;
-        _nextId = (uint)(_freeSql.Select<TEntity>().Max(entity => (long?)entity.Id) ?? 0);
+        _nextId = (uint)(_freeSql.Select<TEntity>().Max(entity => (long?)(entity as IHasDataId)!.Id) ?? 0);
     }
 
     public override uint NextId()
@@ -23,7 +23,7 @@ public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity
 
     public override TEntity? Get(uint id)
     {
-        return _freeSql.Select<TEntity>().Where(v => v.Id == id).First();
+        return _freeSql.Select<TEntity>().Where(v => (v as IHasDataId)!.Id == id).First();
     }
 
     public override IEnumerable<TEntity> GetAll()
@@ -34,8 +34,12 @@ public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity
     public override void Create(TEntity entity)
     {
         var now = DateTime.UtcNow;
-        entity.CreatedAt = now;
-        entity.UpdatedAt = now;
+        if (entity is IAuditable auditable)
+        {
+            auditable.CreatedAt = now;
+            auditable.UpdatedAt = now;
+        }
+
         _freeSql.Insert<TEntity>()
             .AppendData(entity)
             .ExecuteAffrows();
@@ -45,11 +49,15 @@ public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity
     {
         var now = DateTime.UtcNow;
         var entities = enumerable as TEntity[] ?? enumerable.ToArray();
-        foreach (var entity in entities)
+        if (entities is IAuditable[] array)
         {
-            entity.CreatedAt = now;
-            entity.UpdatedAt = now;
+            foreach (var auditable in array)
+            {
+                auditable.CreatedAt = now;
+                auditable.UpdatedAt = now;
+            }
         }
+
 
         _freeSql.Insert<TEntity>()
             .AppendData(entities)
@@ -58,19 +66,27 @@ public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity
 
     public override void Update(TEntity entity)
     {
-        entity.UpdatedAt = DateTime.UtcNow;
+        if (entity is IAuditable auditable)
+        {
+            auditable.UpdatedAt = DateTime.UtcNow;
+        }
+
         _freeSql.Update<TEntity>(entity);
     }
 
     public override void Upsert(TEntity entity)
     {
-        var now = DateTime.UtcNow;
-        if (entity.CreatedAt == default)
+        if (entity is IAuditable auditable)
         {
-            entity.CreatedAt = now;
+            var now = DateTime.UtcNow;
+            if (auditable.CreatedAt == default)
+            {
+                auditable.CreatedAt = now;
+            }
+
+            auditable.UpdatedAt = now;
         }
 
-        entity.UpdatedAt = now;
 
         _freeSql.InsertOrUpdate<TEntity>()
             .SetSource(entity)
@@ -80,15 +96,15 @@ public class DatabaseRepository<TEntity> : BaseRepository<TEntity> where TEntity
     public override bool Delete(uint id)
     {
         var rows = _freeSql.Update<TEntity>()
-            .Where(v => v.Id == id)
-            .Set(v => v.DeletedAt, DateTime.UtcNow)
+            .Where(v => (v as IHasDataId)!.Id == id)
+            .Set(v => (v as IAuditable)!.DeletedAt, DateTime.UtcNow)
             .ExecuteAffrows();
         return rows > 0;
     }
 
     public override bool Exists(uint id)
     {
-        return _freeSql.Select<TEntity>().Where(v => v.Id == id).Any();
+        return _freeSql.Select<TEntity>().Where(v => (v as IHasDataId)!.Id == id).Any();
     }
 
     public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> exp)

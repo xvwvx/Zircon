@@ -1,39 +1,23 @@
 ﻿// Licensed to the X.
 
 using System.Runtime.InteropServices;
-using Library;
-using Mir3.Data.Models;
-using Mir3.Data.TypeHandler;
+using Mir3.Shared;
 
-namespace Mir3.Data.Database;
+namespace Metal.Data;
 
-public class DatabaseDataSource : BaseDataSource
+public abstract class RepositoryDataSource : BaseDataSource
 {
-    public readonly Dictionary<Type, IRepository> Repositories = new();
+    private readonly Dictionary<Type, IRepository> _repositories = new();
 
-    static DatabaseDataSource()
-    {
-        FreeSql.Internal.Utils.TypeHandlers.TryAdd(typeof(Stats), new StatsTypeHandler());
-        FreeSql.Internal.Utils.TypeHandlers.TryAdd(typeof(ItemSetStats[]), new ItemSetStatsTypeHandler());
-    }
+    protected abstract IRepository<T> CreateRepository<T>() where T : class;
 
-    public DatabaseDataSource(IFreeSql connection)
-    {
-        connection.GlobalFilter
-            .Apply<BaseEntity>("DeletedAt", v => v.DeletedAt == null);
-        connection.UseJsonMap();
-        Connection = connection;
-    }
-
-    public IFreeSql Connection { get; }
-
-    public IRepository<T> GetRepository<T>() where T : BaseEntity
+    public IRepository<T> GetRepository<T>() where T : class
     {
         var type = typeof(T);
-        ref var repository = ref CollectionsMarshal.GetValueRefOrAddDefault(Repositories, type, out var exists);
+        ref var repository = ref CollectionsMarshal.GetValueRefOrAddDefault(_repositories, type, out var exists);
         if (!exists)
         {
-            repository = new DatabaseRepository<T>(Connection);
+            repository = CreateRepository<T>();
         }
 
         return (repository as IRepository<T>)!;
@@ -81,7 +65,7 @@ public class DatabaseDataSource : BaseDataSource
 
     public override void Update(object entity)
     {
-        var repository = Repositories[entity.GetType()];
+        var repository = _repositories[entity.GetType()];
         repository.Update(entity);
     }
 }

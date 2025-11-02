@@ -4,9 +4,8 @@ using System.Diagnostics;
 using Autofac;
 using FreeSql;
 using Microsoft.Extensions.Configuration;
-using Mir3.Data.Database;
-using Mir3.Data.Models;
 using Mir3.Server.Managers;
+using Mir3.Shared.Database;
 using Serilog;
 
 namespace Mir3.Server.Bootstrap;
@@ -54,6 +53,7 @@ public sealed class AutofacModule : Module
                     .UseAutoSyncStructure(true)
                     .UseMonitorCommand(cmd => logger.Debug(cmd.CommandText))
                     .Build();
+                freeSql.UseJsonMap();
                 return new DatabaseDataSource(freeSql);
             })
             .SingleInstance();

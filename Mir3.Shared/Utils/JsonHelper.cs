@@ -3,7 +3,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Mir3.Data.Utils;
+namespace Mir3.Shared.Utils;
 
 public sealed class JsonHelper
 {

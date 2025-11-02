@@ -1,34 +1,20 @@
 // Licensed to X.
 
 using System.Diagnostics;
-using Nito.AsyncEx;
 
-namespace Mir3.Shared.Utils;
+namespace Metal.Utils;
 
-[DebuggerDisplay("UpdateTick: {Delta} {TickCount}")]
+[DebuggerDisplay("UpdateTick: {Delta} {TickCount} {Time}")]
 public readonly struct UpdateTick(uint delta, uint tickCount)
 {
     public readonly uint Delta = delta;
     public readonly uint TickCount = tickCount;
 
     public long Time => (long)TickCount * Delta;
-
-    public override string ToString()
-    {
-        return $"UpdateTick: {Time} {TickCount}";
-    }
 }
 
 public static class Runner
 {
-    // 绑定线程的AsyncLoop
-    public static ValueTask RunFixedTickLoopOnThreadAsync(uint ticksPerSecond, Func<UpdateTick, ValueTask> fixedUpdate,
-        CancellationToken ct)
-    {
-        AsyncContext.Run(async () => { await RunFixedTickLoopAsync(ticksPerSecond, fixedUpdate, ct).ConfigureAwait(false); });
-        return ValueTask.CompletedTask;
-    }
-
     public static async ValueTask RunFixedTickLoopAsync(
         uint ticksPerSecond,
         Func<UpdateTick, ValueTask> fixedUpdate,

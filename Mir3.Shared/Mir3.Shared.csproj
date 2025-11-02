@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\LibraryCore\LibraryCore.csproj" />
-      <ProjectReference Include="..\ServerLibrary\ServerLibrary.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibraryCore\LibraryCore.csproj"/>
+    <ProjectReference Include="..\Metal\Metal.csproj"/>
+    <ProjectReference Include="..\ServerLibrary\ServerLibrary.csproj"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Autofac" Version="8.4.0" />
-      <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
-      <PackageReference Include="Stride.Core.Mathematics" Version="4.2.1.2485" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="8.4.0"/>
+    <PackageReference Include="FreeSql" Version="3.5.215"/>
+    <PackageReference Include="Stride.Core.Mathematics" Version="4.2.1.2485"/>
+  </ItemGroup>
 
 </Project>

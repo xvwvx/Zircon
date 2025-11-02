@@ -2,11 +2,12 @@
 
 using FreeSql.DataAnnotations;
 using Library;
+using Metal.Data;
 
-namespace Mir3.Data.Models;
+namespace Mir3.Shared.Models;
 
 // [Index("uk_ItemName", "ItemName", true)]
-public sealed class Item : BaseEntity
+public sealed class Item : IHasDataId, IAuditable
 {
     public string ItemName { get; set; } = string.Empty;
 
@@ -55,4 +56,11 @@ public sealed class Item : BaseEntity
     public uint Set { get; set; }
 
     public Stats Stats { get; set; } = new();
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
+
+    [Column(IsPrimary = true, Position = short.MaxValue)]
+    public uint Id { get; set; }
 }

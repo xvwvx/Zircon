@@ -8,6 +8,10 @@ public abstract class BaseSystem<TWorld, TTick>(IComponentContext context) : IDi
 {
     public TWorld World { get; private set; } = context.Resolve<TWorld>();
 
+    public virtual void Dispose()
+    {
+    }
+
     public virtual void Initialize()
     {
     }
@@ -25,10 +29,6 @@ public abstract class BaseSystem<TWorld, TTick>(IComponentContext context) : IDi
     }
 
     public virtual void Clear()
-    {
-    }
-
-    public virtual void Dispose()
     {
     }
 }

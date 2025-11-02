@@ -2,10 +2,15 @@
 
 using System.Diagnostics;
 
-namespace Mir3.Shared.Utils;
+namespace Metal.Utils;
 
 public abstract class TypedEventDispatcher<TSession, TBase> where TSession : class where TBase : class
 {
+    public delegate Task AsyncDelegate<in TData>(
+        TSession session,
+        TData packet
+    ) where TData : TBase;
+
     public delegate void SyncDelegate<in TData>(
         TSession session,
         TData packet
@@ -27,15 +32,6 @@ public abstract class TypedEventDispatcher<TSession, TBase> where TSession : cla
         _handlers.Remove(type);
     }
 
-    private readonly struct SyncHandlerWrapper<TData>(SyncDelegate<TData> handler)
-        where TData : TBase
-    {
-        public void Invoke(TSession session, TBase data)
-        {
-            handler(session, (TData)data);
-        }
-    }
-
     public void Register<TData>(SyncDelegate<TData> handler) where TData : TBase
     {
         var wrapper = new SyncHandlerWrapper<TData>(handler);
@@ -45,20 +41,6 @@ public abstract class TypedEventDispatcher<TSession, TBase> where TSession : cla
     public void Unregister<TData>(SyncDelegate<TData> handler) where TData : TBase
     {
         UnregisterInternal(typeof(TData));
-    }
-
-    public delegate Task AsyncDelegate<in TData>(
-        TSession session,
-        TData packet
-    ) where TData : TBase;
-
-    private readonly struct AsyncHandlerWrapper<TData>(AsyncDelegate<TData> handler)
-        where TData : TBase
-    {
-        public void Invoke(TSession session, TBase data)
-        {
-            _ = handler(session, (TData)data);
-        }
     }
 
     public void Register<TData>(AsyncDelegate<TData> handler) where TData : TBase
@@ -94,5 +76,23 @@ public abstract class TypedEventDispatcher<TSession, TBase> where TSession : cla
         }
 
         return false;
+    }
+
+    private readonly struct SyncHandlerWrapper<TData>(SyncDelegate<TData> handler)
+        where TData : TBase
+    {
+        public void Invoke(TSession session, TBase data)
+        {
+            handler(session, (TData)data);
+        }
+    }
+
+    private readonly struct AsyncHandlerWrapper<TData>(AsyncDelegate<TData> handler)
+        where TData : TBase
+    {
+        public void Invoke(TSession session, TBase data)
+        {
+            _ = handler(session, (TData)data);
+        }
     }
 }
