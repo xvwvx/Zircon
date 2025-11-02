@@ -10,7 +10,6 @@ namespace MirDB
 {
     public abstract class DBObject : INotifyPropertyChanged
     {
-        [JsonIgnore]
         public int Index { get; internal set; }
 
         [IgnoreProperty]
