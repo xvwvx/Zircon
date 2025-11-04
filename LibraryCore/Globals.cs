@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using LibraryCore;
 using MemoryPack;
 
 namespace Library
@@ -340,8 +341,7 @@ namespace Library
         public string Name { get; set; }
 
         public string Caption { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color NameColour { get; set; }
+        public Color4 NameColour { get; set; }
         public string GuildName { get; set; }
         public string GuildRank { get; set; }
 
@@ -355,14 +355,12 @@ namespace Library
 
         public int Level { get; set; }
         public int HairType { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
+        public Color4 HairColour { get; set; }
         public int Weapon { get; set; }
         public int Armour { get; set; }
         public int Costume { get; set; }
         public int Shield { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color ArmourColour { get; set; }
+        public Color4 ArmourColour { get; set; }
 
         public ExteriorEffect ArmourEffect { get; set; }
         public ExteriorEffect EmblemEffect { get; set; }
@@ -459,8 +457,7 @@ namespace Library
         public int Level { get; set; }
         public decimal Experience { get; set; }
 
-        [MemoryPackAllowSerialize]
-        public Color Colour { get; set; }
+        public Color4 Colour { get; set; }
 
         public TimeSpan SpecialRepairCoolDown { get; set; }
         public TimeSpan ResetCoolDown { get; set; }
@@ -473,7 +470,7 @@ namespace Library
 
         public UserItemFlags Flags { get; set; }
         public TimeSpan ExpireTime { get; set; }
-        
+
         [MemoryPackIgnore]
         public int Weight
         {
@@ -810,7 +807,7 @@ namespace Library
 
         [MemoryPackIgnore]
         public DateTime NextCast;
-        
+
         [MemoryPackIgnore]
         public int Cost => Info.BaseCost + Level * Info.LevelCost / 3;
 
@@ -942,14 +939,13 @@ namespace Library
         public string DefaultRank { get; set; }
         public GuildPermission DefaultPermission { get; set; }
 
-        [MemoryPackAllowSerialize]
-        public Color Colour { get; set; }
+        public Color4 Colour { get; set; }
         public int Flag { get; set; }
 
         public List<ClientGuildMemberInfo> Members { get; set; }
 
         public List<ClientUserItem> Storage { get; set; }
-        
+
         [MemoryPackIgnore]
         public GuildPermission Permission => Members.FirstOrDefault(x => x.Index == UserIndex)?.Permission ?? GuildPermission.None;
     }
@@ -985,7 +981,7 @@ namespace Library
     public partial class ClientUserQuest
     {
         public int Index { get; set; }
-        
+
         [MemoryPackIgnore]
         public QuestInfo Quest { get; set; }
 
@@ -999,7 +995,7 @@ namespace Library
 
         public DateTime DateTaken { get; set; }
         public DateTime DateCompleted { get; set; }
-        
+
         [MemoryPackIgnore]
         public bool IsComplete => Tasks.Count == Quest.Tasks.Count && Tasks.All(x => x.Completed);
 
@@ -1016,14 +1012,14 @@ namespace Library
     public partial class ClientUserQuestTask
     {
         public int Index { get; set; }
-        
+
         [MemoryPackIgnore]
         public QuestTask Task { get; set; }
 
         public int TaskIndex { get; set; }
 
         public long Amount { get; set; }
-        
+
         [MemoryPackIgnore]
         public bool Completed => Amount >= Task.Amount;
 
@@ -1174,7 +1170,7 @@ namespace Library
         public int CurrencyIndex { get; set; }
         public CurrencyInfo Info;
         public long Amount { get; set; }
-        
+
         [MemoryPackIgnore]
         public bool CanPickup
         {

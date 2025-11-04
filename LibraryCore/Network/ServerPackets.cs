@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using LibraryCore;
 using MemoryPack;
 
 namespace Library.Network.ServerPackets
@@ -319,8 +320,7 @@ namespace Library.Network.ServerPackets
         public string Name { get; set; }
 
         public string Caption { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color NameColour { get; set; }
+        public Color4 NameColour { get; set; }
         public string GuildName { get; set; }
 
         public MirDirection Direction { get; set; }
@@ -330,14 +330,12 @@ namespace Library.Network.ServerPackets
         public MirGender Gender { get; set; }
 
         public int HairType { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
+        public Color4 HairColour { get; set; }
         public int Weapon { get; set; }
         public int Shield { get; set; }
         public int Armour { get; set; }
         public int Costume { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color ArmourColour { get; set; }
+        public Color4 ArmourColour { get; set; }
         public ExteriorEffect ArmourEffect { get; set; }
         public ExteriorEffect EmblemEffect { get; set; }
         public ExteriorEffect WeaponEffect { get; set; }
@@ -368,8 +366,7 @@ namespace Library.Network.ServerPackets
         public uint ObjectID { get; set; }
         public int MonsterIndex { get; set; }
         public string CustomName { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color NameColour { get; set; }
+        public Color4 NameColour { get; set; }
         public string PetOwner { get; set; }
 
         public MirDirection Direction { get; set; }
@@ -388,8 +385,7 @@ namespace Library.Network.ServerPackets
         public bool Extra { get; set; }
 
         public int Extra1 { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color Colour { get; set; }
+        public Color4 Colour { get; set; }
 
         public ClientCompanionObject CompanionObject { get; set; }
     }
@@ -433,8 +429,7 @@ namespace Library.Network.ServerPackets
     public sealed partial class ObjectNameColour : Packet
     {
         public uint ObjectID { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color Colour { get; set; }
+        public Color4 Colour { get; set; }
     }
 
     [MemoryPackable]
@@ -445,8 +440,7 @@ namespace Library.Network.ServerPackets
         public int Shield { get; set; }
         public int Armour { get; set; }
         public int Costume { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color ArmourColour { get; set; }
+        public Color4 ArmourColour { get; set; }
         public ExteriorEffect ArmourEffect { get; set; }
         public ExteriorEffect EmblemEffect { get; set; }
         public ExteriorEffect WeaponEffect { get; set; }
@@ -867,8 +861,7 @@ namespace Library.Network.ServerPackets
         public string GuildName { get; set; }
         public string GuildRank { get; set; }
         public int GuildFlag { get; set; } = -1;
-        [MemoryPackAllowSerialize]
-        public Color GuildColour { get; set; }
+        public Color4 GuildColour { get; set; }
         public string Partner { get; set; }
         public MirClass Class { get; set; }
         public int Level { get; set; }
@@ -878,8 +871,7 @@ namespace Library.Network.ServerPackets
         //public int HermitPoints { get; set; }
         public List<ClientUserItem> Items { get; set; }
         public int Hair { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
+        public Color4 HairColour { get; set; }
         public int Fame { get; set; }
 
         //public int WearWeight { get; set; }
@@ -1119,8 +1111,7 @@ namespace Library.Network.ServerPackets
         public string DefaultRank { get; set; }
         public GuildPermission DefaultPermission { get; set; }
 
-        [MemoryPackAllowSerialize]
-        public Color Colour { get; set; }
+        public Color4 Colour { get; set; }
         public int Flag { get; set; }
 
         public List<ClientGuildMemberInfo> Members { get; set; }
@@ -1488,10 +1479,8 @@ namespace Library.Network.ServerPackets
         public MirGender Gender { get; set; }
         public int HairType { get; set; }
 
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color ArmourColour { get; set; }
+        public Color4 HairColour { get; set; }
+        public Color4 ArmourColour { get; set; }
 
     }
 

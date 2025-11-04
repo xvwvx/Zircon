@@ -4,10 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stride.Core.Mathematics" Version="4.2.1.2485" />
+    <PackageReference Include="Stride.Core.Mathematics" Version="4.2.1.2485"/>
   </ItemGroup>
 
 </Project>

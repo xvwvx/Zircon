@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using LibraryCore;
 using MemoryPack;
 
 namespace Library.Network.ClientPackets
@@ -79,10 +80,8 @@ namespace Library.Network.ClientPackets
         public MirClass Class { get; set; }
         public MirGender Gender { get; set; }
         public int HairType { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color ArmourColour { get; set; }
+        public Color4 HairColour { get; set; }
+        public Color4 ArmourColour { get; set; }
         public string CheckSum { get; set; }
     }
 
@@ -643,8 +642,7 @@ namespace Library.Network.ClientPackets
     [MemoryPackable]
     public sealed partial class GuildColour : Packet
     {
-        [MemoryPackAllowSerialize]
-        public Color Colour { get; set; }
+        public Color4 Colour { get; set; }
     }
 
     [MemoryPackable]
@@ -713,13 +711,13 @@ namespace Library.Network.ClientPackets
     {
         public int Index { get; set; }
     }
-    
+
     [MemoryPackable]
     public sealed partial class CompanionRelease : Packet
     {
         public int Index { get; set; }
     }
-    
+
     [MemoryPackable]
     public sealed partial class CompanionStore : Packet
     {
@@ -765,23 +763,20 @@ namespace Library.Network.ClientPackets
     {
         public MirGender Gender { get; set; }
         public int HairType { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
+        public Color4 HairColour { get; set; }
     }
 
     [MemoryPackable]
     public sealed partial class HairChange : Packet
     {
         public int HairType { get; set; }
-        [MemoryPackAllowSerialize]
-        public Color HairColour { get; set; }
+        public Color4 HairColour { get; set; }
     }
 
     [MemoryPackable]
     public sealed partial class ArmourDye : Packet
     {
-        [MemoryPackAllowSerialize]
-        public Color ArmourColour { get; set; }
+        public Color4 ArmourColour { get; set; }
     }
 
     [MemoryPackable]
